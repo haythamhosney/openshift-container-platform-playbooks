@@ -8,10 +8,13 @@
     description: "Create Storage Class"
     storage: "{{ lookup('env','STORAGEKIND') }}"
   tasks:
+  - name: check if storageclass exist
+    shell: oc get storageclass | wc -l
+    register: storageclassNumber
   - name: Create unmanaged storage class
     shell: oc create -f /home/{{ lookup('env','SUDOUSER') }}/scunmanaged.yml
-    when: storage == 'unmanaged'
+    when: storage == 'unmanaged' and storageclassNumber.stdout|int == 1
 
   - name: Create managed storage class
     shell: oc create -f /home/{{ lookup('env','SUDOUSER') }}/scmanaged.yml
-    when: storage == 'managed'
+    when: storage == 'managed' and storageclassNumber.stdout|int = 1
