@@ -17,4 +17,4 @@
 
   - name: Create managed storage class
     shell: oc create -f /home/{{ lookup('env','SUDOUSER') }}/scmanaged.yml
-    when: storage == 'managed' and storageclassNumber.stdout|int = 1
+    when: storage == 'managed' and storageclassNumber.stdout|int == 1
